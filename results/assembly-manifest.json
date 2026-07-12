@@ -1,0 +1,384 @@
+{
+ "total_docs": 170311,
+ "total_words": 76468981,
+ "files": [
+  {
+   "path": "data/interim-clean/fineweb2/bos_Latn/shard-00000.jsonl.gz",
+   "kind": "real",
+   "source": "fineweb2",
+   "docs": 9991,
+   "words": 5655861
+  },
+  {
+   "path": "data/interim-clean/fineweb2/bos_Latn/shard-00001.jsonl.gz",
+   "kind": "real",
+   "source": "fineweb2",
+   "docs": 9987,
+   "words": 4037355
+  },
+  {
+   "path": "data/interim-clean/fineweb2/hrv_Latn/shard-00000.jsonl.gz",
+   "kind": "real",
+   "source": "fineweb2",
+   "docs": 9995,
+   "words": 8667190
+  },
+  {
+   "path": "data/interim-clean/fineweb2/hrv_Latn/shard-00001.jsonl.gz",
+   "kind": "real",
+   "source": "fineweb2",
+   "docs": 9990,
+   "words": 8558550
+  },
+  {
+   "path": "data/interim-clean/fineweb2/srp_Cyrl/shard-00000.jsonl.gz",
+   "kind": "real",
+   "source": "fineweb2",
+   "docs": 9994,
+   "words": 6213465
+  },
+  {
+   "path": "data/interim-clean/fineweb2/srp_Cyrl/shard-00001.jsonl.gz",
+   "kind": "real",
+   "source": "fineweb2",
+   "docs": 9989,
+   "words": 5696147
+  },
+  {
+   "path": "data/interim-clean/fineweb2/srp_Latn/shard-00000.jsonl.gz",
+   "kind": "real",
+   "source": "fineweb2",
+   "docs": 9999,
+   "words": 7646289
+  },
+  {
+   "path": "data/interim-clean/fineweb2/srp_Latn/shard-00001.jsonl.gz",
+   "kind": "real",
+   "source": "fineweb2",
+   "docs": 9997,
+   "words": 7793179
+  },
+  {
+   "path": "data/interim-clean/forum/reddit/shard-00000.jsonl.gz",
+   "kind": "real",
+   "source": "forum",
+   "docs": 38,
+   "words": 53970
+  },
+  {
+   "path": "data/interim-clean/literature/shard-00000.jsonl.gz",
+   "kind": "real",
+   "source": "literature",
+   "docs": 1998,
+   "words": 771127
+  },
+  {
+   "path": "data/interim-clean/literature/shard-00001.jsonl.gz",
+   "kind": "real",
+   "source": "literature",
+   "docs": 2000,
+   "words": 771913
+  },
+  {
+   "path": "data/interim-clean/literature/shard-00002.jsonl.gz",
+   "kind": "real",
+   "source": "literature",
+   "docs": 2000,
+   "words": 620025
+  },
+  {
+   "path": "data/interim-clean/literature/shard-00003.jsonl.gz",
+   "kind": "real",
+   "source": "literature",
+   "docs": 2000,
+   "words": 340573
+  },
+  {
+   "path": "data/interim-clean/literature/shard-00004.jsonl.gz",
+   "kind": "real",
+   "source": "literature",
+   "docs": 1999,
+   "words": 192079
+  },
+  {
+   "path": "data/interim-clean/literature/shard-00005.jsonl.gz",
+   "kind": "real",
+   "source": "literature",
+   "docs": 2000,
+   "words": 273441
+  },
+  {
+   "path": "data/interim-clean/literature/shard-00006.jsonl.gz",
+   "kind": "real",
+   "source": "literature",
+   "docs": 2000,
+   "words": 118919
+  },
+  {
+   "path": "data/interim-clean/literature/shard-00007.jsonl.gz",
+   "kind": "real",
+   "source": "literature",
+   "docs": 2000,
+   "words": 109808
+  },
+  {
+   "path": "data/interim-clean/literature/shard-00008.jsonl.gz",
+   "kind": "real",
+   "source": "literature",
+   "docs": 2000,
+   "words": 118936
+  },
+  {
+   "path": "data/interim-clean/literature/shard-00009.jsonl.gz",
+   "kind": "real",
+   "source": "literature",
+   "docs": 1997,
+   "words": 464830
+  },
+  {
+   "path": "data/interim-clean/literature/shard-00010.jsonl.gz",
+   "kind": "real",
+   "source": "literature",
+   "docs": 2000,
+   "words": 796707
+  },
+  {
+   "path": "data/interim-clean/literature/shard-00011.jsonl.gz",
+   "kind": "real",
+   "source": "literature",
+   "docs": 2000,
+   "words": 743441
+  },
+  {
+   "path": "data/interim-clean/literature/shard-00012.jsonl.gz",
+   "kind": "real",
+   "source": "literature",
+   "docs": 390,
+   "words": 147906
+  },
+  {
+   "path": "data/interim-clean/opensubtitles/bs/shard-00000.jsonl.gz",
+   "kind": "real",
+   "source": "opensubtitles",
+   "docs": 2000,
+   "words": 485185
+  },
+  {
+   "path": "data/interim-clean/opensubtitles/bs/shard-00001.jsonl.gz",
+   "kind": "real",
+   "source": "opensubtitles",
+   "docs": 2000,
+   "words": 485582
+  },
+  {
+   "path": "data/interim-clean/opensubtitles/bs/shard-00002.jsonl.gz",
+   "kind": "real",
+   "source": "opensubtitles",
+   "docs": 2000,
+   "words": 489413
+  },
+  {
+   "path": "data/interim-clean/opensubtitles/bs/shard-00003.jsonl.gz",
+   "kind": "real",
+   "source": "opensubtitles",
+   "docs": 2000,
+   "words": 493453
+  },
+  {
+   "path": "data/interim-clean/opensubtitles/bs/shard-00004.jsonl.gz",
+   "kind": "real",
+   "source": "opensubtitles",
+   "docs": 2000,
+   "words": 474392
+  },
+  {
+   "path": "data/interim-clean/opensubtitles/bs/shard-00005.jsonl.gz",
+   "kind": "real",
+   "source": "opensubtitles",
+   "docs": 2000,
+   "words": 506592
+  },
+  {
+   "path": "data/interim-clean/opensubtitles/bs/shard-00006.jsonl.gz",
+   "kind": "real",
+   "source": "opensubtitles",
+   "docs": 2000,
+   "words": 505461
+  },
+  {
+   "path": "data/interim-clean/opensubtitles/bs/shard-00007.jsonl.gz",
+   "kind": "real",
+   "source": "opensubtitles",
+   "docs": 2000,
+   "words": 501572
+  },
+  {
+   "path": "data/interim-clean/opensubtitles/bs/shard-00008.jsonl.gz",
+   "kind": "real",
+   "source": "opensubtitles",
+   "docs": 2000,
+   "words": 516234
+  },
+  {
+   "path": "data/interim-clean/opensubtitles/bs/shard-00009.jsonl.gz",
+   "kind": "real",
+   "source": "opensubtitles",
+   "docs": 2000,
+   "words": 504012
+  },
+  {
+   "path": "data/interim-clean/opensubtitles/hr/shard-00000.jsonl.gz",
+   "kind": "real",
+   "source": "opensubtitles",
+   "docs": 2000,
+   "words": 497882
+  },
+  {
+   "path": "data/interim-clean/opensubtitles/hr/shard-00001.jsonl.gz",
+   "kind": "real",
+   "source": "opensubtitles",
+   "docs": 2000,
+   "words": 478721
+  },
+  {
+   "path": "data/interim-clean/opensubtitles/hr/shard-00002.jsonl.gz",
+   "kind": "real",
+   "source": "opensubtitles",
+   "docs": 2000,
+   "words": 471199
+  },
+  {
+   "path": "data/interim-clean/opensubtitles/hr/shard-00003.jsonl.gz",
+   "kind": "real",
+   "source": "opensubtitles",
+   "docs": 2000,
+   "words": 471409
+  },
+  {
+   "path": "data/interim-clean/opensubtitles/hr/shard-00004.jsonl.gz",
+   "kind": "real",
+   "source": "opensubtitles",
+   "docs": 2000,
+   "words": 462360
+  },
+  {
+   "path": "data/interim-clean/opensubtitles/hr/shard-00005.jsonl.gz",
+   "kind": "real",
+   "source": "opensubtitles",
+   "docs": 2000,
+   "words": 471945
+  },
+  {
+   "path": "data/interim-clean/opensubtitles/hr/shard-00006.jsonl.gz",
+   "kind": "real",
+   "source": "opensubtitles",
+   "docs": 2000,
+   "words": 474965
+  },
+  {
+   "path": "data/interim-clean/opensubtitles/hr/shard-00007.jsonl.gz",
+   "kind": "real",
+   "source": "opensubtitles",
+   "docs": 2000,
+   "words": 468223
+  },
+  {
+   "path": "data/interim-clean/opensubtitles/hr/shard-00008.jsonl.gz",
+   "kind": "real",
+   "source": "opensubtitles",
+   "docs": 2000,
+   "words": 478609
+  },
+  {
+   "path": "data/interim-clean/opensubtitles/hr/shard-00009.jsonl.gz",
+   "kind": "real",
+   "source": "opensubtitles",
+   "docs": 2000,
+   "words": 489825
+  },
+  {
+   "path": "data/interim-clean/opensubtitles/sr/shard-00000.jsonl.gz",
+   "kind": "real",
+   "source": "opensubtitles",
+   "docs": 2000,
+   "words": 506318
+  },
+  {
+   "path": "data/interim-clean/opensubtitles/sr/shard-00001.jsonl.gz",
+   "kind": "real",
+   "source": "opensubtitles",
+   "docs": 2000,
+   "words": 486803
+  },
+  {
+   "path": "data/interim-clean/opensubtitles/sr/shard-00002.jsonl.gz",
+   "kind": "real",
+   "source": "opensubtitles",
+   "docs": 2000,
+   "words": 506525
+  },
+  {
+   "path": "data/interim-clean/opensubtitles/sr/shard-00003.jsonl.gz",
+   "kind": "real",
+   "source": "opensubtitles",
+   "docs": 2000,
+   "words": 494438
+  },
+  {
+   "path": "data/interim-clean/opensubtitles/sr/shard-00004.jsonl.gz",
+   "kind": "real",
+   "source": "opensubtitles",
+   "docs": 2000,
+   "words": 496788
+  },
+  {
+   "path": "data/interim-clean/opensubtitles/sr/shard-00005.jsonl.gz",
+   "kind": "real",
+   "source": "opensubtitles",
+   "docs": 2000,
+   "words": 515443
+  },
+  {
+   "path": "data/interim-clean/opensubtitles/sr/shard-00006.jsonl.gz",
+   "kind": "real",
+   "source": "opensubtitles",
+   "docs": 2000,
+   "words": 520352
+  },
+  {
+   "path": "data/interim-clean/opensubtitles/sr/shard-00007.jsonl.gz",
+   "kind": "real",
+   "source": "opensubtitles",
+   "docs": 2000,
+   "words": 473902
+  },
+  {
+   "path": "data/interim-clean/opensubtitles/sr/shard-00008.jsonl.gz",
+   "kind": "real",
+   "source": "opensubtitles",
+   "docs": 2000,
+   "words": 477068
+  },
+  {
+   "path": "data/interim-clean/opensubtitles/sr/shard-00009.jsonl.gz",
+   "kind": "real",
+   "source": "opensubtitles",
+   "docs": 2000,
+   "words": 527880
+  },
+  {
+   "path": "data/generated/mimo/docs.jsonl",
+   "kind": "synth",
+   "source": "mimo",
+   "docs": 956,
+   "words": 356644
+  },
+  {
+   "path": "data/generated/vertex/docs.jsonl",
+   "kind": "synth",
+   "source": "vertex",
+   "docs": 4991,
+   "words": 1588075
+  }
+ ]
+}

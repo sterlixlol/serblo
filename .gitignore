@@ -1,0 +1,38 @@
+
+*.arrow
+*.bin
+checkpoints/
+ckpts_rescue/
+data/
+data/generated/
+data/interim/
+data/interim-clean/
+# Data — large, not version controlled
+data/manifests/
+data/processed/
+data/raw/
+docs/dump.txt
+.DS_Store
+*.egg-info/
+.env
+.env.*
+.env.bak*
+.ipynb_checkpoints/
+*.key
+*.log
+# Models / checkpoints / training logs
+# OS
+*.parquet
+*.pt
+__pycache__/
+*.py[cod]
+# Python
+release/
+runs/
+*.safetensors
+# Secrets (API keys for Gemini / OpenAI / Anthropic / xAI / etc.)
+STATUS.md
+.venv/
+venv/
+wandb/
+# Working status doc (untracked by design) + all data (large / in GCS / regenerable)

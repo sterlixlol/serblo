@@ -1,0 +1,24 @@
+# Core
+torch
+numpy
+pyyaml
+
+# Data pipeline
+datatrove        # FineWeb-2-style pipeline: LID, filtering, MinHash dedup
+fasttext         # language ID (GlotLID model)
+cyrtranslit      # Cyrillic <-> Latin transliteration
+datasets         # HF datasets (stream FineWeb-2 BCS)
+tokenizers       # custom 32k BCS BPE
+
+# Classifier
+transformers     # XLM-RoBERTa quality classifier
+scikit-learn
+
+# Metrics
+nltk             # self-BLEU (scripts/diversity_baseline.py)
+
+# Generation (rented H100 box / per-provider; install as needed)
+# vllm                       # batched open-weight generation
+# google-generativeai        # Gemini
+# anthropic                  # Claude
+# openai                     # GPT / Codex
