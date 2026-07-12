@@ -1,0 +1,30 @@
+# Debug run on the RTX 3060 (12 GB, shared with Kazi): real 125M arch, prove loss falls,
+# verify checkpoint/resume, and MEASURE tokens/sec to extrapolate the P3 GPU cost.
+out_dir: data/train-debug
+data_dir: data/tokenized-sample
+device: cuda
+seed: 0
+bf16: true
+model:
+  vocab_size: 32000
+  n_layer: 14
+  n_head: 12
+  n_kv_head: 4
+  d_model: 768
+  mlp_hidden: 2432
+  ctx: 2048
+  tie_embeddings: true
+weight_decay: 0.1
+peak_lr: 4.0e-4
+betas: [0.9, 0.95]
+grad_clip: 1.0
+lr_floor_frac: 0.1
+micro_batch: 2          # 3060 12GB fits ~2 at ctx2048; 2*8*2048 = 32,768 tok/step
+grad_accum: 8
+warmup_steps: 40
+max_steps: 300
+log_interval: 10
+eval_interval: 100
+eval_iters: 20
+ckpt_interval: 100
+patience: 0             # no plateau stop in the debug run

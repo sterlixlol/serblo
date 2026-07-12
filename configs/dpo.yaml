@@ -1,0 +1,25 @@
+# DPO on a single GPU (pairs are short; 2 x 125M + batch 8 fits the 3060).
+# Run: PYTHONPATH=src PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True \
+#        python3 -m serblo.train.dpo --config configs/dpo.yaml
+sft_ckpt: data/sft/ckpts/sft_final.pt
+prefs_file: data/dpo/prefs.jsonl     # output of scripts/judge_prefs.py
+tokenizer: data/tokenizer/tokenizer.json
+out_dir: data/dpo/ckpts
+
+epochs: 2
+batch_size: 8
+beta: 0.1
+peak_lr: 5.0e-6                      # DPO wants a gentle LR; the ref anchor does the heavy lifting
+lr_floor_frac: 0.1
+warmup_frac: 0.05
+weight_decay: 0.0
+betas: [0.9, 0.95]
+grad_clip: 1.0
+
+val_frac: 0.02
+seed: 7
+bf16: true
+log_interval: 5
+eval_interval: 20
+eval_iters: 8
+ckpt_interval: 50

@@ -1,0 +1,38 @@
+# Full pretraining on a Vertex Spot H100 (a3-highgpu-1g, 80 GB), plan-B corpus (all data).
+# mb32 x ga8 x 2048 = 524,288 tok/step (0.5M). 80 GB has ample room; probe-confirmed.
+# max_steps 135000 = ~71B tokens = 2.99 epochs over the 23.6B corpus.
+# Changing max_steps mid-run shortens the cosine: on resume at ~93.4k LR steps 2.4e-4 -> ~1.2e-4
+# and anneals to the 4e-5 floor by 135k: a proper annealed finish instead of a hot-LR stop.
+# compile: true, H100/Hopper benefits; falls back cleanly if a kernel is unsupported.
+out_dir: /workspace/ckpts
+data_dir: /workspace/tokenized
+device: cuda
+seed: 0
+bf16: true
+model:
+  vocab_size: 32000
+  n_layer: 14
+  n_head: 12
+  n_kv_head: 4
+  d_model: 768
+  mlp_hidden: 2432
+  ctx: 2048
+  tie_embeddings: true
+weight_decay: 0.1
+peak_lr: 4.0e-4
+betas: [0.9, 0.95]
+grad_clip: 1.0
+lr_floor_frac: 0.1
+micro_batch: 32
+grad_accum: 8
+warmup_steps: 2000
+max_steps: 135000
+log_interval: 20
+eval_interval: 1000
+eval_iters: 50
+ckpt_interval: 1000
+snapshot_interval: 10000
+patience: 15
+plateau_min_delta: 1.0e-3
+compile: true
+gcs_prefix: gs://serblo-vertex-a9a36e4a/serblo/checkpoints

@@ -1,0 +1,32 @@
+# Probe #2 on Vertex Spot H100: torch.compile ON + micro_batch 64 (80 GB has room) to
+# measure the REAL full-run throughput. Compile warms up over the first ~2 steps; steps 6-12 are
+# the clean warm number. No eval/ckpt/gcs.
+out_dir: /workspace/ckpts
+data_dir: /workspace/tokenized
+device: cuda
+seed: 0
+bf16: true
+model:
+  vocab_size: 32000
+  n_layer: 14
+  n_head: 12
+  n_kv_head: 4
+  d_model: 768
+  mlp_hidden: 2432
+  ctx: 2048
+  tie_embeddings: true
+weight_decay: 0.1
+peak_lr: 4.0e-4
+betas: [0.9, 0.95]
+grad_clip: 1.0
+lr_floor_frac: 0.1
+micro_batch: 32
+grad_accum: 8
+warmup_steps: 12
+max_steps: 12
+log_interval: 3
+eval_interval: 999999
+eval_iters: 5
+ckpt_interval: 999999
+patience: 0
+compile: true

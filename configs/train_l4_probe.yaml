@@ -1,0 +1,30 @@
+# Probe on the L4: 6 steps at the REAL micro_batch/grad_accum to (a) confirm no OOM at
+# 24 GB and (b) measure warm tok/s for the exact cost math. No eval, no checkpoint, no GCS.
+out_dir: /home/sterlix/probe_ckpts
+data_dir: /home/sterlix/tokenized
+device: cuda
+seed: 0
+bf16: true
+model:
+  vocab_size: 32000
+  n_layer: 14
+  n_head: 12
+  n_kv_head: 4
+  d_model: 768
+  mlp_hidden: 2432
+  ctx: 2048
+  tie_embeddings: true
+weight_decay: 0.1
+peak_lr: 4.0e-4
+betas: [0.9, 0.95]
+grad_clip: 1.0
+lr_floor_frac: 0.1
+micro_batch: 8
+grad_accum: 32
+warmup_steps: 6
+max_steps: 6
+log_interval: 2
+eval_interval: 999999
+eval_iters: 5
+ckpt_interval: 999999
+patience: 0

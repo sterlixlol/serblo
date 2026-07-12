@@ -1,0 +1,32 @@
+# Full pretraining run: 1x A100/L4, ~0.5M tok/step, ~200k steps, stop on val plateau.
+# micro_batch/grad_accum tuned on the actual GPU (16*16*2048 = 524,288 tok/step).
+out_dir: data/train-full
+data_dir: data/tokenized          # full backbone shards (built in P1c before P3)
+device: cuda
+seed: 0
+bf16: true
+model:
+  vocab_size: 32000
+  n_layer: 14
+  n_head: 12
+  n_kv_head: 4
+  d_model: 768
+  mlp_hidden: 2432
+  ctx: 2048
+  tie_embeddings: true
+weight_decay: 0.1
+peak_lr: 4.0e-4
+betas: [0.9, 0.95]
+grad_clip: 1.0
+lr_floor_frac: 0.1
+micro_batch: 16
+grad_accum: 16
+warmup_steps: 2000                # ~1% of 200k
+max_steps: 200000                 # 100B-token ceiling; plateau usually stops earlier
+log_interval: 20
+eval_interval: 1000
+eval_iters: 50
+ckpt_interval: 1000
+patience: 15                      # stop if val_loss doesn't improve for 15 evals
+plateau_min_delta: 1.0e-3
+gcs_prefix: gs://serblo-vertex-a9a36e4a/serblo/checkpoints

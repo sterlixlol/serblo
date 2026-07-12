@@ -1,0 +1,35 @@
+# Full pretraining on the L4 (24 GB), plan-B corpus (backbone + conv register x3, ~22.95B eff).
+# micro_batch 8 x grad_accum 32 x 2048 = 524,288 tok/step (0.5M). Probe-confirmed at 24 GB.
+# max_steps is FINALIZED once tok/s -> $ is agreed (it also sets the LR cosine length,
+# so it must match the intended token budget; 200000 = the 100B-token / ~4.4-epoch ceiling).
+out_dir: /home/sterlix/ckpts
+data_dir: /home/sterlix/tokenized
+device: cuda
+seed: 0
+bf16: true
+model:
+  vocab_size: 32000
+  n_layer: 14
+  n_head: 12
+  n_kv_head: 4
+  d_model: 768
+  mlp_hidden: 2432
+  ctx: 2048
+  tie_embeddings: true
+weight_decay: 0.1
+peak_lr: 4.0e-4
+betas: [0.9, 0.95]
+grad_clip: 1.0
+lr_floor_frac: 0.1
+micro_batch: 8
+grad_accum: 32
+warmup_steps: 2000
+max_steps: 200000
+log_interval: 20
+eval_interval: 1000
+eval_iters: 50
+ckpt_interval: 1000
+snapshot_interval: 10000
+patience: 15
+plateau_min_delta: 1.0e-3
+gcs_prefix: gs://serblo-vertex-a9a36e4a/serblo/checkpoints

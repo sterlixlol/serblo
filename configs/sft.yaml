@@ -1,0 +1,25 @@
+# SFT on a single GPU (3060-safe: micro 2 x accum 32 = 64 rows/step).
+# Run: PYTHONPATH=src PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True \
+#        python3 -m serblo.train.sft --config configs/sft.yaml
+base_ckpt: ckpts_rescue/ckpt_latest.pt   # FINAL base: step 135,000, val 2.7478 (PPL 15.61)
+sft_file: data/sft/assembled/serblo-sft-train.jsonl
+tokenizer: data/tokenizer/tokenizer.json
+out_dir: data/sft/ckpts
+
+epochs: 2
+micro_batch: 2
+grad_accum: 32
+peak_lr: 1.0e-4       # SFT wants cooler than pretraining's 4e-4; halve again if the first eval jumps
+lr_floor_frac: 0.1
+warmup_frac: 0.03
+weight_decay: 0.1
+betas: [0.9, 0.95]
+grad_clip: 1.0
+
+val_frac: 0.02
+seed: 7
+bf16: true
+log_interval: 5
+eval_interval: 20
+eval_iters: 8
+ckpt_interval: 50

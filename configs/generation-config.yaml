@@ -1,0 +1,296 @@
+# Serblo: Generation Config v1
+# Combinatorial persona/axis libraries + prompt templates for synthetic data generation.
+# USAGE: per generation, sample ONE value from each axis for the target register,
+#        fill the template, apply source-specific overrides + grounding, call the generator.
+# This is a STARTING hypothesis. Widen the value lists when the diversity gate
+# (self-BLEU + n-gram entropy vs real data) says output is too homogeneous.
+#
+# Output is ALWAYS Serbian in LATIN script (gajica). The pipeline normalizes to Latin,
+# so generators should emit Latin directly. Never request Cyrillic.
+# (Companion to Serblo-PRD.md §7.4 and §7.9.)
+
+# =========================================================
+# CONVERSATIONAL REGISTER  (priority), target ~3.3B tokens
+# =========================================================
+conversational_axes:
+  voice:                       # drives slang density, references, vocabulary
+    - teen
+    - student_20s
+    - working_adult_30s
+    - older_adult_40plus
+    - young_teen
+  region_lean:                 # BCS-pooling texture; natural flavor, NOT caricature
+    - belgrade_urban
+    - vojvodina
+    - southern_serbia
+    - bosnian_inflected
+    - croatian_inflected
+    - montenegrin
+  emotional_state:             # HIGHEST-VARIANCE axis: same topic + different emotion = different text
+    - venting
+    - hyped
+    - sarcastic
+    - genuinely_asking
+    - arguing
+    - joking
+    - bored_lowkey
+    - nostalgic
+    - complaining
+    - annoyed
+    - excited
+    - wholesome
+  platform:
+    - discord_chat
+    - forum_reply
+    - youtube_comment
+    - news_comment
+    - group_chat
+    - reddit_style_post
+    - instagram_comment
+  topic:                       # CONTENT axis, weak diversity; do not over-rely on it for spread
+    - football
+    - gaming
+    - school_exams
+    - relationships
+    - food
+    - music
+    - local_politics
+    - tv_film
+    - everyday_life
+    - cars
+    - memes
+    - work
+    - family
+    - tech_gadgets
+  sloppiness:                  # lets grammar-looseness vary: the texture you want
+    - very_sloppy
+    - sloppy
+    - relaxed
+    - coherent_casual
+
+conversational_output_shapes:  # PRETRAIN prose shape (NOT Q/A), sample one
+  - forum_thread               # several people replying to each other, distinct voices
+  - first_person_monologue     # one person ranting / story-telling / posting
+  - comment_reply_chain        # original post + a few replies
+  - chat_log                   # informal back-and-forth, chat style
+
+# Discourse-particle pool: the manifest samples a small ROTATING subset per prompt into
+# {particles}. A fixed example list ("pa ma bre ej jbg") got copied verbatim: those 5 ran
+# 6-540x their real rate while unlisted synonyms (hej) stayed at ~0 (measured).
+# Rotating a 2-of-N sample spreads the prime across the pool so no particle dominates the
+# corpus. Mixed BCS flavor (bre=SR, vala/bogami=BS, ma/more=south) pairs with region_lean.
+conversational_particles:
+  - pa
+  - ma
+  - bre
+  - ej
+  - jbg
+  - hej
+  - ajde
+  - jao
+  - joj
+  - more
+  - vala
+  - bogami
+  - de
+  - ba
+  - znaš
+  - ono
+  - kao
+  - valjda
+
+# =========================================================
+# ESSAY REGISTER, target ~2.7B tokens
+# =========================================================
+essay_axes:
+  essay_type:
+    - argumentative
+    - expository
+    - descriptive
+    - compare_contrast
+    - reflective
+    - analytical
+    - persuasive
+  author_voice:
+    - high_school_essay
+    - university_essay
+    - journalistic_oped
+    - encyclopedic_explainer
+    - blog_post
+    - formal_report
+  topic_domain:                # AVOID current events: model won't know recent facts; no hallucinated specifics in corpus
+    - history
+    - science
+    - literature
+    - society
+    - technology
+    - culture
+    - philosophy
+    - art
+    - geography
+    - psychology
+    - economics
+    - nature
+  length:
+    - short_1_2_para
+    - medium_3_5_para
+    - longer_6plus
+  thesis:
+    - explicit_thesis
+    - no_explicit_thesis
+  density:
+    - academic_dense
+    - balanced
+    - accessible_explainer
+
+# =========================================================
+# PROMPT TEMPLATES: fill {slots} from sampled axis values
+# (English base; see usage.serbian_prompting_note for the casual register)
+# =========================================================
+templates:
+  conversational_base: |
+    Write in Serbian (Latin script). Voice: {voice}. Region: {region_lean}.
+    You feel {emotional_state} and you're writing a {platform} about: {topic}.
+    Write exactly how people actually type online — relaxed everyday Serbian, slang,
+    abbreviations, and natural discourse particles (e.g. {particles}) — but only where
+    they genuinely fit, don't force them. Grammar does NOT need to be perfect;
+    loose/broken grammar is natural and desired. Sloppiness level: {sloppiness}.
+    Do NOT write formally. Do NOT explain or add commentary. Output only the text.
+    Form: {output_shape_instruction}
+
+  essay_base: |
+    Write a {length} {essay_type} text in Serbian (Latin script), in the voice of a
+    {author_voice}, on a topic in the domain of {topic_domain}. Density: {density}.
+    {thesis_instruction}
+    Use correct, fluent, natural Serbian — proper grammar and structure.
+    Output only the text, with no preamble and no meta-commentary.
+
+  output_shape_instructions:
+    forum_thread: "Write it as a short forum thread — several different people replying to each other, each in their own voice."
+    first_person_monologue: "Write it as one person's first-person post / rant / story."
+    comment_reply_chain: "Write it as an original comment plus a few replies to it."
+    chat_log: "Write it as an informal back-and-forth in chat style."
+
+  thesis_instructions:
+    explicit_thesis: "State a clear thesis up front."
+    no_explicit_thesis: "You don't need to state an explicit thesis."
+
+  overrides:
+    casual_grammar_override: "Don't worry about grammar at all — write exactly how someone carelessly types on their phone. Authenticity over correctness."
+    reasoning_depth: "Use careful reasoning to give the text real logical structure and depth, but keep the surface natural, idiomatic Serbian."
+
+# =========================================================
+# GROUNDING: inject real Serbian as a STYLE anchor (not content)
+# Topics MUST diverge from the reference, or you generate near-duplicates.
+# =========================================================
+grounding:
+  preferred_mode: style_transfer
+  rate:                        # fraction of manifest prompts carrying a real style anchor
+    essay: 0.75                # the measured disease lives here (Flash-Lite
+                               # self-BLEU-4 1.83x real, MiMo 1.51x: skeleton convergence)
+    conversational: 0.0        # DEFERRED: only subtitle anchors exist, and they'd drag chat
+                               # toward dubbed-dialogue register; enable when a genuine
+                               # forum/chat reference pool lands
+  modes:
+    style_transfer: |
+      Here is an example of the voice/register to match:
+      ---
+      {reference}
+      ---
+      Now write about {topic} in that same natural style — DIFFERENT content, same voice.
+    seed_continuation: |
+      Continue this text naturally:
+      {reference}
+      # higher duplication risk — use sparingly; dedup must catch it
+  reference_sources:
+    casual: [subtitle_dialogue_chunks, forum_comment_snippets]
+    essay:  [wikipedia_passages, literature_excerpts]
+  intensity_by_source:         # who needs grounding most
+    gpt_opus_essay: heavy      # drag stiff/translationese surface toward native; earns the most here
+    openweight_casual: moderate
+    gemini_mimo_casual: light  # already good; grounding just adds variance
+
+# =========================================================
+# PER-SOURCE CONFIG
+# =========================================================
+per_source:
+  gemini_flash:
+    registers: [conversational, essay]
+    temperature: {conversational: 1.0, essay: 0.8}
+    grounding: light
+    template: conversational_base / essay_base
+    status: vouched
+    notes: "Quality anchor, both registers, casual workhorse. Pro sub + rotated API keys."
+  gemini_pro:
+    registers: [conversational, essay]
+    temperature: {conversational: 1.0, essay: 0.8}
+    grounding: light
+    template: conversational_base / essay_base
+    status: vouched
+    notes: "Longer/harder essays + quality casual."
+  mimo_2_5_pro:
+    registers: [conversational, essay_capped]
+    temperature: {conversational: 1.1, essay: 0.7}
+    grounding: light
+    template: "conversational_base + casual_grammar_override ; essay_base"
+    status: vouched
+    notes: "CASUAL CO-ANCHOR. Embrace loose grammar in casual (it's the texture). Cap essay — loose grammar reads as error in formal."
+  gpt_5_5:
+    registers: [essay, conversational_minimal]
+    temperature: {essay: 0.7, conversational: 0.9}
+    grounding: heavy
+    template: "essay_base + reasoning_depth"
+    status: secondary
+    notes: "Essay-forward (stiff surface tolerable in formal). Headless via codex. Heavy grounding to fight translationese."
+  opus_4:
+    registers: [essay, conversational_minimal]
+    temperature: {essay: 0.7, conversational: 0.9}
+    grounding: heavy
+    template: "essay_base + reasoning_depth"
+    status: secondary
+    notes: "Essay-secondary. Headless via `claude -p` (Max 20x) + Antigravity free pool."
+  qwen_3_5_h100:
+    registers: [conversational, essay]
+    temperature: {conversational: 1.1, essay: 0.85}
+    grounding: moderate
+    template: conversational_base / essay_base
+    status: vouched_openweight
+    notes: "Open-weight volume. vLLM, BATCH HARD, spot/interruptible. Run hot for variance. ~0.65B slice."
+  groq_hosted:
+    registers: [conversational, essay]
+    temperature: {conversational: 1.1, essay: 0.85}
+    grounding: moderate
+    template: conversational_base / essay_base
+    status: vouched_openweight
+    notes: "Free-tier open-weight volume. Models chosen; greenlit."
+  nim_open:
+    registers: [conversational, essay]
+    temperature: {conversational: 1.1, essay: 0.85}
+    grounding: moderate
+    template: conversational_base / essay_base
+    status: vouched_openweight
+    notes: "Free. 6-key round-robin, 1 call at a time (each key rests ~5 call-durations -> beats rate limit). Models chosen; greenlit."
+  grok_4_3:
+    registers: [conversational]
+    temperature: {conversational: 1.1}
+    grounding: none
+    template: conversational_base
+    status: seasoning
+    notes: "$4 credits. Seasoning only. Grok-iness is the point; classifier catches anything unusable."
+  human:
+    registers: [conversational]
+    notes: "You. Type the hardest casual — texture no model nails. Seeds the bottom of the casual range. IS the reference."
+
+# =========================================================
+# USAGE
+# =========================================================
+usage:
+  sampling: "Per generation: sample one value per axis (target register) -> fill template -> apply source overrides + grounding -> call generator -> wrap output in the §7.9 format."
+  combinatorial_space:
+    conversational: "5 x 6 x 12 x 7 x 14 x 4 = ~141k base combos (x4 output shapes = ~564k for pretrain prose)."
+    essay: "7 x 6 x 12 x 3 x 2 x 3 = ~9k combos."
+    point: "The cross-product IS the within-register diversity. Sample combinatorially; never pick from a flat menu."
+  scale: "6B tokens / ~500-1000 tok per generation = ~6-12M generations. Must be programmatic."
+  output_format: "Wrap in §7.9 minimal-delimiter format: <<<DOC>>> for pretrain prose; <<<Q>>> / <<<A>>> / <<<END>>> for instruction pairs. Sentinels stripped before tokenizer."
+  diversity_gate_loop: "Generate sample -> self-BLEU + n-gram entropy vs real (per register) -> if too homogeneous: widen value lists / raise temp / add a model -> regenerate. Gemini and MiMo are primary gate targets (single-lineage, high volume)."
+  serbian_prompting_note: "For the CASUAL template specifically, consider rendering it in Serbian — priming in the target language tends to improve native-register feel. You're better placed than me to write idiomatic Serbian instructions, so the English version is provided as the base. Essay/GPT/Opus likely fine in English (better instruction adherence)."
